@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "trading"
+version = "0.0.1"
+description = "trading project for delta hedging via ibkr API"
+authors = ["Thomas Uriot <thomas.uriot@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "trading", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.0.0"
+pydantic = "^2.0.0"
+loguru = "^0.6.0"
+typing-extensions = "^4.5.0"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.0.4"
+pytest = "^7.2.1"
+jupyterlab = "^3.6.1"
+mypy = "^1.0.0"
+ruff = "^0.0.253"
+
+[build-system]
+requires = ["poetry-core>=1.0.8"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+extend-select = [
+    "SIM",
+    "TCH",
+    "NPY",
+    "I",
+    "C",
+    "N",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "UP",
+    "D2",
+    "BLE",
+    "ANN",
+    "S",
+    "ICN",
+    "PT",
+    "NPY"
+]
+line-length = 140
+show-fixes = true
+target-version = "py311"
+fix = true
+ignore = [
+    "ANN101",
+    "ANN102",
+    "ANN401",
+    "D206",
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**" = ["ARG", "S", "D"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "pandas"
+ignore_missing_imports = true
