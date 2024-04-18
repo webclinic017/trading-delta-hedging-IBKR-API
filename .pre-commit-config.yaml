@@ -29,4 +29,3 @@ repos:
           --ignore-missing-imports,
         ]
         exclude_types: [ jupyter ]
-
