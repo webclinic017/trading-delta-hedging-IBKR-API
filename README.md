@@ -1,3 +1,7 @@
 # Project for algorithmic trading of (dynamic) delta hedging
 
-* WIP
+
+## dev:
+
+* `poetry install`
+* `pre-commit install`
