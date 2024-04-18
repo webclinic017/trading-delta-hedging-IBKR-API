@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# poetry lock file
+*.lock
+
+
 # Distribution / packaging
 .Python
 build/
@@ -166,5 +170,3 @@ node_modules
 # Visual Studio Code
 .vscode/
 .vscode-test/
-
-
