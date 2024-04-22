@@ -8,7 +8,13 @@ __pycache__/
 
 # poetry lock file
 *.lock
+poetry.lock
 
+# python client
+pythonclient/
+
+# notebooks
+Notebooks/
 
 # Distribution / packaging
 .Python
