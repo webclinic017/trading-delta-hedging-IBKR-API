@@ -1,5 +1,7 @@
 """main module that implements the trading app and connects to IBKR API."""
 
+import threading
+
 from dotenv import dotenv_values
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
@@ -16,10 +18,17 @@ class IBapi(EWrapper, EClient):
 
 def connect_app() -> IBapi:
     """connect to IBapi TWS client"""
+    def run_loop() -> None:
+        appl.run()
+
     appl = IBapi()
     appl.connect(env_vars.get("IP_ADDRESS"),
                  int(env_vars.get("PORT")),
                  int(env_vars.get("CLIENT_ID")))
+
+    api_thread = threading.Thread(target=run_loop, daemon=True)
+    api_thread.start()
+
     return appl
 
 
