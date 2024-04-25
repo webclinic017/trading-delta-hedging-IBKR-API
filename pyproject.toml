@@ -54,10 +54,14 @@ show-fixes = true
 target-version = "py311"
 fix = true
 ignore = [
+    "N803",
+    "N802",
     "ANN101",
     "ANN102",
     "ANN401",
+    "D205",
     "D206",
+    "D211"
 ]
 
 [tool.ruff.per-file-ignores]

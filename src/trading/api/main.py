@@ -3,20 +3,14 @@
 import threading
 
 from dotenv import dotenv_values
-from ibapi.client import EClient
-from ibapi.wrapper import EWrapper
+
+from trading.api.ibapi_class import IBapi
+from trading.api.stock_contracts import get_apple_contract
 
 env_vars = dotenv_values(".env")
 
 
-class IBapi(EWrapper, EClient):
-    """Ibapi Class that inherits from both EWrapper and EClient"""
-
-    def __init__(self) -> None:
-        EClient.__init__(self, self)
-
-
-def connect_app() -> IBapi:
+def main() -> IBapi:
     """connect to IBapi TWS client"""
     def run_loop() -> None:
         appl.run()
@@ -29,8 +23,16 @@ def connect_app() -> IBapi:
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
 
+    # request live data (code 1)
+    # appl.reqMarketDataType(1)
+
+    apple_contract = get_apple_contract()
+
+    # here, we want to use regulatorySnapshot = False (stream of data)
+    appl.reqMktData(1, apple_contract, '', False, False, [])
+
     return appl
 
 
 if __name__ == '__main__':
-    app = connect_app()
+    app = main()
