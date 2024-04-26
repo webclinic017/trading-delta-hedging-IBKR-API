@@ -3,6 +3,7 @@
 from ibapi.client import EClient
 from ibapi.common import TickAttrib
 from ibapi.wrapper import EWrapper
+from loguru import logger
 
 
 class IBapi(EWrapper, EClient):
@@ -13,22 +14,17 @@ class IBapi(EWrapper, EClient):
     def __init__(self) -> None:
         """Define variables to be assigned returned value from the Ewrapper"""
         EClient.__init__(self, self)
-        self.apple_stock_price: float | None = None
-        self.market_is_live: bool | None = None
+        self.test_apple_stock_price: float | None = None
+        self.test_market_is_live: bool = False
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""
-        if tickType == 2 and reqId == 1:
-            self.apple_stock_price = price
-            print('The current ask price is: ', price)
+        if tickType == 2 and reqId in [1, 2]:
+            self.test_apple_stock_price = price
+            logger.info(f'The current ask price is: {price}')
 
     def marketDataType(self, reqId: int, marketDataType: int) -> None:
         """Ewrapper method to receive if market data is live/delayed/frozen from reqMktData()."""
-        if reqId == 1:
-            print("MarketDataType. ReqId:", reqId, "Type: 1=live, 2=frozen, 3=delayed", marketDataType)
-            if marketDataType == 1:
-                self.market_is_live = True
-            else:
-                self.market_is_live = False
-
-        print("INSIDE THE FUNC 2", self.market_is_live)
+        if reqId in [1, 2] and marketDataType == 1:
+            self.test_market_is_live = True
+            logger.info(f'Live data is: {self.test_market_is_live}')

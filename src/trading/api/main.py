@@ -1,6 +1,7 @@
 """main module that implements the trading app and connects to IBKR API."""
 
 import threading
+import time
 
 from dotenv import dotenv_values
 
@@ -19,17 +20,16 @@ def main() -> IBapi:
     appl.connect(env_vars.get("IP_ADDRESS"),
                  int(env_vars.get("PORT")),
                  int(env_vars.get("CLIENT_ID")))
-
+    # appl.run()
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
 
-    # request live data (code 1)
-    # appl.reqMarketDataType(1)
+    aapl_stock_contract = get_apple_contract()
+    appl.reqMktData(2, aapl_stock_contract, '', False, False, [])
 
-    apple_contract = get_apple_contract()
+    time.sleep(5)
 
-    # here, we want to use regulatorySnapshot = False (stream of data)
-    appl.reqMktData(1, apple_contract, '', False, False, [])
+    print("HERE 1", appl.test_market_is_live)
 
     return appl
 
