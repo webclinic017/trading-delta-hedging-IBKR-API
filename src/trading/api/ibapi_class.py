@@ -19,12 +19,12 @@ class IBapi(EWrapper, EClient):
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""
-        if tickType == 2 and reqId in [1, 2]:
+        if tickType == 2 and reqId == 1:
             self.test_apple_stock_price = price
             logger.info(f'The current ask price is: {price}')
 
     def marketDataType(self, reqId: int, marketDataType: int) -> None:
         """Ewrapper method to receive if market data is live/delayed/frozen from reqMktData()."""
-        if reqId in [1, 2] and marketDataType == 1:
+        if reqId == 1 and marketDataType == 1:
             self.test_market_is_live = True
             logger.info(f'Live data is: {self.test_market_is_live}')

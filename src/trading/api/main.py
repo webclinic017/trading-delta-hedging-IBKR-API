@@ -20,16 +20,16 @@ def main() -> IBapi:
     appl.connect(env_vars.get("IP_ADDRESS"),
                  int(env_vars.get("PORT")),
                  int(env_vars.get("CLIENT_ID")))
-    # appl.run()
+
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
 
     aapl_stock_contract = get_apple_contract()
-    appl.reqMktData(2, aapl_stock_contract, '', False, False, [])
+    appl.reqMktData(1, aapl_stock_contract, '', False, False, [])
 
-    time.sleep(5)
+    time.sleep(2)
 
-    print("HERE 1", appl.test_market_is_live)
+    assert appl.test_market_is_live is True
 
     return appl
 

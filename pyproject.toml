@@ -61,7 +61,8 @@ ignore = [
     "ANN401",
     "D205",
     "D206",
-    "D211"
+    "D211",
+    "S101"
 ]
 
 [tool.ruff.per-file-ignores]
