@@ -2,30 +2,26 @@ import time
 
 from dotenv import dotenv_values
 from ibapi.contract import Contract
-from trading.api.main import main
+from trading.api.ibapi_class import IBapi
 
 env_vars = dotenv_values(".env")
 
 
-def test_connect_app(aapl_stock_contract: Contract) -> None:
+def app_connection(appl: IBapi) -> None:
+    assert appl.isConnected() is True
+    assert appl.connState == 2
 
-    app = main()
-    assert app.isConnected() is True
-    assert app.connState == 2
 
-    app.reqMktData(1, aapl_stock_contract, '', False, False, [])
+def data_is_live(appl: IBapi, aapl_contract: Contract) -> None:
+
+    appl.reqMktData(1, aapl_contract, '', False, False, [])
     time.sleep(2.0)  # allow for the connection to be made
+    assert isinstance(appl.test_apple_stock_price, float)
+    assert appl.test_market_is_live is True
 
-    assert isinstance(app.test_apple_stock_price, float)
-    assert app.test_market_is_live is True
 
+def test_full_app(app: IBapi, aapl_stock_contract: Contract) -> None:
+
+    app_connection(app)
+    data_is_live(app, aapl_stock_contract)
     app.disconnect()
-
-
-# def test_data_is_live(aapl_stock_contract: Contract) -> None:
-#
-#     app = main()
-#     # assert app.test_market_is_live is True
-#     print("we are here", app.test_apple_stock_price)
-#     assert isinstance(app.test_apple_stock_price, float)
-#     app.disconnect()
