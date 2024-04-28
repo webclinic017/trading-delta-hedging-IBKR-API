@@ -1,9 +1,6 @@
 """main module that implements the trading app and connects to IBKR API."""
 
-
-import multiprocessing
-
-# import threading
+import threading
 import time
 
 from dotenv import dotenv_values
@@ -25,20 +22,16 @@ def main() -> IBapi:
                  int(env_vars.get("PORT")),
                  int(env_vars.get("CLIENT_ID")))
 
-    api_proc = multiprocessing.Process(target=run_loop, args=())
-    api_proc.start()
-
-    # api_thread = threading.Thread(target=run_loop, daemon=True)
-    # api_thread.start()
+    api_thread = threading.Thread(target=run_loop, daemon=True)
+    api_thread.start()
 
     aapl_stock_contract = get_apple_contract()
     appl.reqMktData(1, aapl_stock_contract, '', False, False, [])
 
-    time.sleep(2)
+    time.sleep(5)
 
     if not appl.test_market_is_live:
-        api_proc.terminate()
-        raise PriceNotLiveError("Terminating thread due to price not being live.")
+        raise PriceNotLiveError("Terminating process due to price not being live.")
 
     return appl
 

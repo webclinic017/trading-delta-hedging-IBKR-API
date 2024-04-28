@@ -15,9 +15,9 @@ def app_connection(appl: IBapi) -> None:
 def data_is_live(appl: IBapi, aapl_contract: Contract) -> None:
 
     appl.reqMktData(1, aapl_contract, '', False, False, [])
-    time.sleep(2.0)  # allow for the connection to be made
-    assert isinstance(appl.test_apple_stock_price, float)
+    time.sleep(2)  # allow for the connection to be made
     assert appl.test_market_is_live is True
+    assert isinstance(appl.test_apple_stock_price, float)
 
 
 def test_full_app(app: IBapi, aapl_stock_contract: Contract) -> None:
