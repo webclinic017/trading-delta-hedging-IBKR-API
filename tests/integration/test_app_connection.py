@@ -14,10 +14,11 @@ def app_connection(appl: IBapi) -> None:
 
 def data_is_live(appl: IBapi, aapl_contract: Contract) -> None:
 
-    appl.reqMktData(1, aapl_contract, '', False, False, [])
-    time.sleep(2)  # allow for the connection to be made
-    assert appl.test_market_is_live is True
-    assert isinstance(appl.test_apple_stock_price, float)
+    apple_req_id = int(env_vars["APPLE_REQID"])
+    appl.reqMktData(apple_req_id, aapl_contract, '', False, False, [])
+    time.sleep(5)  # allow for the connection to be made
+    assert appl.stock_price_dic[apple_req_id].market_is_live is True
+    assert isinstance(appl.stock_price_dic[apple_req_id].price, float)
 
 
 def test_full_app(app: IBapi, aapl_stock_contract: Contract) -> None:
