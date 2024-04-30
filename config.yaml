@@ -1,0 +1,7 @@
+stocks:
+  - reqid: 1
+    ticker: "AAPL"
+  - reqid: 2
+    ticker: "RKLB"
+  - reqid: 3
+    ticker: "NVDA"

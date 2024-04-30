@@ -7,8 +7,10 @@ from ibapi.wrapper import EWrapper
 from loguru import logger
 
 from trading.core.data_models.data_models import StockInfo
+from trading.utils import config_load
 
 env_vars = dotenv_values(".env")
+config_vars = config_load("./config.yaml")
 
 
 class IBapi(EWrapper, EClient):
@@ -20,18 +22,10 @@ class IBapi(EWrapper, EClient):
         """Define variables to be assigned returned value from the Ewrapper"""
         EClient.__init__(self, self)
 
-        # self.test_apple_stock_price: float | None = None
-        # self.test_apple_market_is_live: bool = False
-        #
-        # self.rklb_stock_price: float | None = None
-        # self.rklb_market_is_live: bool | None = None
-
         # build a dic for each stock
-
-        self.stock_price_dic = {int(env_vars["APPLE_REQID"]): StockInfo(stock="aapl"),
-                                int(env_vars["RKLB_REQID"]): StockInfo(stock="rklb")}
-
-        print("DIC PRICE", self.stock_price_dic)
+        self.stock_price_dic = {}
+        for stock_dic in config_vars["stocks"]:
+            self.stock_price_dic[stock_dic["reqid"]] = StockInfo(stock=stock_dic["ticker"], reqid=stock_dic["reqid"])
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""

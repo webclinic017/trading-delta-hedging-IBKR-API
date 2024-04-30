@@ -1,5 +1,6 @@
 import pytest
 from ibapi.contract import Contract
+from trading.api.contracts.stock_contracts import get_stock_contract
 from trading.api.ibapi_class import IBapi
 from trading.api.main import main
 
@@ -7,11 +8,7 @@ from trading.api.main import main
 @pytest.fixture()
 def aapl_stock_contract() -> Contract:
 
-    contract = Contract()
-    contract.symbol = 'AAPL'
-    contract.secType = 'STK'
-    contract.exchange = 'SMART'
-    contract.currency = 'USD'
+    contract = get_stock_contract("AAPL")
 
     return contract
 

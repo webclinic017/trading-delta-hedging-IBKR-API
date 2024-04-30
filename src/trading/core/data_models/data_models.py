@@ -10,5 +10,6 @@ class StockInfo(BaseModel):
     """Stock card with defined attributes"""
 
     stock: str
+    reqid: int
     price: float | None = None
     market_is_live: bool | None = None
