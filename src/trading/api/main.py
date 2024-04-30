@@ -32,8 +32,8 @@ def main() -> IBapi:
     rklb_reqid = int(env_vars.get("RKLB"))
     appl.reqMktData(rklb_reqid, rklb_stock_contract, '', False, False, [])
 
-    nvda_stock_contract = get_stock_contract("NVDA")
-    nvda_reqid = int(env_vars.get("NVDA"))
+    nvda_stock_contract = get_stock_contract("AAPL")
+    nvda_reqid = int(env_vars.get("AAPL"))
     appl.reqMktData(nvda_reqid, nvda_stock_contract, '', False, False, [])
 
     time.sleep(5)
