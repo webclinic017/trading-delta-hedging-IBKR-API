@@ -1,4 +1,5 @@
 import threading
+import time
 
 import pytest
 from dotenv import dotenv_values
@@ -29,5 +30,7 @@ def app() -> IBapi:
 
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
+
+    time.sleep(2)
 
     return appl

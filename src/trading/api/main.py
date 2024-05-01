@@ -8,7 +8,7 @@ from loguru import logger
 
 from trading.api.contracts.stock_contracts import get_stock_contract
 from trading.api.ibapi_class import IBapi
-from trading.core.exceptions.exceptions import check_price_is_live_and_is_float
+from trading.core.exceptions.checks import check_price_is_live_and_is_float
 from trading.utils import config_load
 
 env_vars = dotenv_values(".env")
@@ -27,6 +27,15 @@ def main() -> IBapi:
 
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
+
+    # Check if the API is connected via orderid
+    while True:
+        if isinstance(appl.nextorderId, int):
+            logger.info('We are connected')
+            break
+        else:
+            print('Waiting for connection... (retrying)')
+            time.sleep(1)
 
     rklb_stock_contract = get_stock_contract("RKLB")
     rklb_reqid = config_vars["stocks"]["RKLB"]["reqid"]

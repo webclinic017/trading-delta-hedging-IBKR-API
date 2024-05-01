@@ -1,6 +1,7 @@
 import pytest
 from trading.api.ibapi_class import IBapi
-from trading.core.exceptions.exceptions import PriceNotFloatError, PriceNotLiveError, check_price_is_live_and_is_float
+from trading.core.exceptions.checks import check_price_is_live_and_is_float
+from trading.core.exceptions.exceptions import PriceNotFloatError, PriceNotLiveError
 
 
 @pytest.mark.parametrize(("price", "market_is_live", "reqid", "expected_error"), [
@@ -20,8 +21,6 @@ def test_check_price_is_live_and_is_float(app: IBapi,
 
     app.stock_price_dic[reqid].price = price
     app.stock_price_dic[reqid].market_is_live = market_is_live
-
-    print(price, market_is_live)
 
     if expected_error is None:
         print(expected_error)

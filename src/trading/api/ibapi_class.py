@@ -1,5 +1,6 @@
 """Ibapi Class that inherits from both EWrapper and EClient."""
 
+
 from dotenv import dotenv_values
 from ibapi.client import EClient
 from ibapi.common import TickAttrib
@@ -22,10 +23,19 @@ class IBapi(EWrapper, EClient):
         """Define variables to be assigned returned value from the Ewrapper"""
         EClient.__init__(self, self)
 
+        # next valid order
+        self.nextorderId: int | None = None
+
         # build a dic for each stock
         self.stock_price_dic = {}
         for key, values in config_vars["stocks"].items():
             self.stock_price_dic[values['reqid']] = StockInfo(stock=key, reqid=values['reqid'])
+
+    def nextValidId(self, orderId: int | None) -> None:
+        """Callback function to update the next valid order id"""
+        super().nextValidId(orderId)
+        self.nextorderId = orderId
+        logger.info(f"The next valid order id is: {self.nextorderId}.")
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""

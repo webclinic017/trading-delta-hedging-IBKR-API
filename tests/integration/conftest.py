@@ -1,8 +1,10 @@
 import threading
+import time
 
 import pytest
 from dotenv import dotenv_values
 from ibapi.contract import Contract
+from loguru import logger
 from trading.api.contracts.stock_contracts import get_stock_contract
 from trading.api.ibapi_class import IBapi
 
@@ -29,5 +31,13 @@ def app() -> IBapi:
 
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
+
+    while True:
+        if isinstance(appl.nextorderId, int):
+            logger.info('We are connected')
+            break
+        else:
+            print('Waiting for connection... (retrying)')
+            time.sleep(1)
 
     return appl

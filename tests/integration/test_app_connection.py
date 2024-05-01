@@ -8,6 +8,7 @@ config_vars = config_load("./config.yaml")
 
 
 def app_connection(appl: IBapi) -> None:
+    assert isinstance(appl.nextorderId, int)
     assert appl.isConnected() is True
     assert appl.connState == 2
 
