@@ -10,7 +10,7 @@ env_vars = dotenv_values(".env")
 
 
 @pytest.fixture()
-def aapl_stock_contract() -> Contract:
+def tsla_stock_contract() -> Contract:
 
     contract = get_stock_contract("TSLA")
 

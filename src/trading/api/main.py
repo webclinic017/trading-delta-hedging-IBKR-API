@@ -29,11 +29,11 @@ def main() -> IBapi:
     api_thread.start()
 
     rklb_stock_contract = get_stock_contract("RKLB")
-    rklb_reqid = int(env_vars.get("RKLB"))
+    rklb_reqid = config_vars["stocks"]["RKLB"]["reqid"]
     appl.reqMktData(rklb_reqid, rklb_stock_contract, '', False, False, [])
 
-    nvda_stock_contract = get_stock_contract("AAPL")
-    nvda_reqid = int(env_vars.get("AAPL"))
+    nvda_stock_contract = get_stock_contract("NVDA")
+    nvda_reqid = config_vars["stocks"]["NVDA"]["reqid"]
     appl.reqMktData(nvda_reqid, nvda_stock_contract, '', False, False, [])
 
     time.sleep(5)

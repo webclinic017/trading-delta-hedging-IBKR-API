@@ -24,8 +24,8 @@ class IBapi(EWrapper, EClient):
 
         # build a dic for each stock
         self.stock_price_dic = {}
-        for stock_dic in config_vars["stocks"]:
-            self.stock_price_dic[stock_dic["reqid"]] = StockInfo(stock=stock_dic["ticker"], reqid=stock_dic["reqid"])
+        for key, values in config_vars["stocks"].items():
+            self.stock_price_dic[values['reqid']] = StockInfo(stock=key, reqid=values['reqid'])
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""
