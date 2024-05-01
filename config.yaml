@@ -1,0 +1,9 @@
+stocks:
+  TSLA:
+    reqid: 1
+  RKLB:
+    reqid: 2
+  NVDA:
+    reqid: 3
+  AAPL:
+    reqid: 4

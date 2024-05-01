@@ -4,7 +4,6 @@ import time
 import pytest
 from dotenv import dotenv_values
 from ibapi.contract import Contract
-from loguru import logger
 from trading.api.contracts.stock_contracts import get_stock_contract
 from trading.api.ibapi_class import IBapi
 
@@ -12,7 +11,7 @@ env_vars = dotenv_values(".env")
 
 
 @pytest.fixture()
-def tsla_stock_contract() -> Contract:
+def aapl_stock_contract() -> Contract:
 
     contract = get_stock_contract("TSLA")
 
@@ -32,12 +31,6 @@ def app() -> IBapi:
     api_thread = threading.Thread(target=run_loop, daemon=True)
     api_thread.start()
 
-    while True:
-        if isinstance(appl.nextorderId, int):
-            logger.info('We are connected')
-            break
-        else:
-            print('Waiting for connection... (retrying)')
-            time.sleep(1)
+    time.sleep(2)
 
     return appl
