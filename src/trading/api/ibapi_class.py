@@ -25,7 +25,6 @@ class IBapi(EWrapper, EClient):
 
         # next valid order
         self.nextorderId: int | None = None
-        self.list_order_ids: list = []
 
         self.dic_orderid_to_ticker: dict = {}
 
@@ -37,7 +36,6 @@ class IBapi(EWrapper, EClient):
     def nextValidId(self, orderId: int | None) -> None:
         """Callback function to update the next valid order id"""
         self.nextorderId = orderId
-        self.list_order_ids.append(self.nextorderId)
         logger.info(f"The next valid order id is: {self.nextorderId}.")
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
