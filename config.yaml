@@ -1,6 +1,6 @@
 stocks:
   TSLA:
-    reqid: 1
+    stock: 1
   RKLB:
     reqid: 2
   NVDA:
