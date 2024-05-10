@@ -19,7 +19,7 @@ def place_simple_order(app: IBapi, ticker_symbol: str, action: str, price: float
     if action == "BUY":
         price += 0.01
     elif action == "SELL":
-        price -= 0.1
+        price -= 0.01
     else:
         raise ValueError(f"Valid actions are [BUY, SELL], got {action}.")
 
@@ -39,9 +39,11 @@ def place_profit_taker_order(app: IBapi, ticker_symbol: str, price: float, quant
     quantity: int (number of shares)
     """
     contract = get_stock_contract(ticker_symbol)
+    buy_price = round(price+0.01, 2)
     parent_order = create_parent_order(app.nextorderId,  # type: ignore
                                        "BUY",
-                                       round(price+0.01, 2), quantity)
+                                       buy_price,
+                                       quantity)
     parent_order.transmit = False
     # remove a cent as a buffer for order to trigger
     price_profit_taker = round(price*(1+config_vars["percentage_profit_taking"]/100)-0.01, 2)
@@ -49,6 +51,9 @@ def place_profit_taker_order(app: IBapi, ticker_symbol: str, price: float, quant
                                                                app.nextorderId+1,  # type: ignore
                                                                price_profit_taker, quantity)
     profit_taker_child_order.transmit = True
+
+    assert buy_price < price_profit_taker, f"Selling price {price_profit_taker} is below purchase price {buy_price}."
+
     app.placeOrder(parent_order.orderId, contract, parent_order)
     app.placeOrder(profit_taker_child_order.orderId, contract, profit_taker_child_order)
     app.reqIds(-1)  # increment the next valid id (appl.nextorderId)
