@@ -1,9 +1,14 @@
 """Ibapi Class that inherits from both EWrapper and EClient."""
 
+from decimal import Decimal
 
 from dotenv import dotenv_values
 from ibapi.client import EClient
 from ibapi.common import TickAttrib
+from ibapi.contract import Contract
+from ibapi.execution import Execution
+from ibapi.order import Order
+from ibapi.order_state import OrderState
 from ibapi.wrapper import EWrapper
 from loguru import logger
 
@@ -23,6 +28,9 @@ class IBapi(EWrapper, EClient):
         """Define variables to be assigned returned value from the Ewrapper"""
         EClient.__init__(self, self)
 
+        # orders details dict
+        self.order_status: dict = {}
+
         # next valid order
         self.nextorderId: int | None = None
 
@@ -37,6 +45,28 @@ class IBapi(EWrapper, EClient):
         """Callback function to update the next valid order id"""
         self.nextorderId = orderId
         logger.info(f"The next valid order id is: {self.nextorderId}.")
+
+    def orderStatus(self, orderId: int, status: str, filled: Decimal, remaining: Decimal, avgFullPrice: float,
+                    permId: int, parentId: int, lastFillPrice: float, clientId: int, whyHeld: str, mktCapPrice: float) -> None:
+        """Overwrite Ewrapper orderStatus callback function."""
+        print('orderStatus - orderid:', orderId, 'status:', status, 'filled', filled, 'remaining', remaining,
+              'lastFillPrice', lastFillPrice)
+        self.order_status[orderId] = {"status": status, "filled": filled, "remaining": remaining}
+
+    def get_open_order_status(self) -> None:
+        """Trigger the orderStatus EWrapper callback function."""
+        self.order_status = {}  # reset the dictionary
+        self.reqOpenOrders()
+
+    def openOrder(self, orderId: int, contract: Contract, order: Order, orderState: OrderState) -> None:
+        """Overwrite Ewrapper openOrder callback function."""
+        print('openOrder id:', orderId, contract.symbol, contract.secType, '@', contract.exchange, ':', order.action,
+              order.orderType, order.totalQuantity, orderState.status)
+
+    def execDetails(self, reqId: int, contract: Contract, execution: Execution) -> None:
+        """Overwrite Ewrapper execDetails callback function."""
+        print('Order Executed: ', reqId, contract.symbol, contract.secType, contract.currency, execution.execId,
+              execution.orderId, execution.shares, execution.lastLiquidity)
 
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: TickAttrib) -> None:
         """Ewrapper method to receive price information from reqMktData()."""
