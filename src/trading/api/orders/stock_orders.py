@@ -24,7 +24,6 @@ def create_parent_order(order_id: int, action: str, price: float, quantity: int)
 
 def create_profit_taker_child_order(parent_order_id: int, child_order_id: int, price: float, quantity: int) -> Order:
     """Implements stock order.
-    action: str (SELL OR BUY)
     price: float (price for the limit order)
     quantity: int (number of shares)
     """
@@ -36,7 +35,7 @@ def create_profit_taker_child_order(parent_order_id: int, child_order_id: int, p
     order.totalQuantity = quantity
     order.orderType = 'LMT'
     order.lmtPrice = price
-    order.allOrNone = True
+    order.allOrNone = False
     order.outsideRth = True
 
     return order

@@ -7,3 +7,6 @@ stocks:
     reqid: 3
   AAPL:
     reqid: 4
+
+
+percentage_profit_taking: 1.0
