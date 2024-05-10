@@ -3,20 +3,10 @@ import time
 
 import pytest
 from dotenv import dotenv_values
-from ibapi.contract import Contract
 from loguru import logger
-from trading.api.contracts.stock_contracts import get_stock_contract
 from trading.api.ibapi_class import IBapi
 
 env_vars = dotenv_values(".env")
-
-
-@pytest.fixture()
-def tsla_stock_contract() -> Contract:
-
-    contract = get_stock_contract("TSLA")
-
-    return contract
 
 
 @pytest.fixture()
